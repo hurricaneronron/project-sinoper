@@ -111,22 +111,27 @@ $(document).ready(function () {
       venueIdFromAPI: eventFromAPI.venue_id
     })
     var imgSrc = eventFromAPI.logo.original.url;
+    var first100Chars = eventFromAPI.description.text;
+    first100Chars = first100Chars.substr(0, first100Chars.lastIndexOf(' ', 250)) + '...';
+
+    var addressFromAPI = eventFromAPI.venue.address.localized_multi_line_address_display
+    console.log('addressFromAPI ========', addressFromAPI)
     var infoWindowContent = '<h6 class="eventTitle">' + eventFromAPI.name.text + '</h6>' +
       '<img  class="eventImg-thumb" src="' + imgSrc + '">' +
-      '<p>'+
-      '<a target="_blank" href="'+eventFromAPI.url+'" role="button" class="btn btn-secondary btn-sm btn-visit">Visit Event Page</a>' +
-      '<a type="button" class="btn btn-primary  btn-sm btn-addToQue">Add </a>' +
+      '<p>' +
+      '<a target="_blank" href="' + eventFromAPI.url + '" role="button" class="btn btn-secondary btn-sm btn-visit">Visit Event Page</a>' +
+      '<a data-addr="' + addressFromAPI+'" data-descr="' + first100Chars + '" type="button" class="btn btn-primary  btn-sm btn-addToQue">Add </a>' +
       '</p>';
     // create infowindow for marker clicked
     var infowindow = new google.maps.InfoWindow({
       content: infoWindowContent
     });
     // trying to figure out how to close any open infowindows except the one clicked
-    infowindow.checkIfOpen = function () {
-      console.log('$(this) inside infowindow.checkIfOpen ===', $(this))
-      var map = this.getMap();
-      return (map !== null && typeof map !== "undefined");
-    };
+    // infowindow.checkIfOpen = function () {
+    //   console.log('$(this) inside infowindow.checkIfOpen ===', $(this))
+    //   var map = this.getMap();
+    //   return (map !== null && typeof map !== "undefined");
+    // };
     m.addListener('click', function () {
       console.log('event attached to maker ===========================', event)
       infowindow.open(map, m);
@@ -152,6 +157,8 @@ $(document).ready(function () {
       'url': eventBriteEndPoint + query
     }).done(function (results) {
       console.log(results)
+      var searchResults = JSON.stringify(results)
+      localStorage.setItem('searchResults', searchResults)
       plotToGMap(results)
     })
 
@@ -189,33 +196,49 @@ $(document).ready(function () {
 
 
 
-  function createDivForQue(imgSrc, title ) {
+  function createDivForQue(imgSrc, title, d, a) {
+    // function buildAddress(arrayFromApi) {
+    //   return '<p>' + text + '</p>'
+    // }
+    // var address = '';
 
-    return '<div class="row">'+
-     '<div class="col-sm-12 col-md-8" style="background: url(' + imgSrc + '); background-repeat: no-repeat;background-size: cover;background-position: center;min-height:460px;"></div>'+
-      '<div class="col-sm-12 col-md-4" id="right">'+
-      ' <h4 class="eventName">' + title+'</h4>'+
-        '<p class="organizer">by Organizer</p>'+
-        '<p class="dateTime">Date and Time</p>'+
-        '<p class="location">Location</p>'+
-        '<p class="cost">$Cost</p>'+
-        '<button type="button" class="btn btn-danger">Remove</button>'+
-      '</div>'+
-      '</div>'+
-      '<hr class="app-hr">'
+
+    // if (d.length === 0) {
+    //   address = a
+    //   // for (let i = 0; i < d.length; i++) {
+    //   //   var addressLine = buildAddress(d[i]);
+    //   // }
+    // }
+
+
+    return '<div class="row">' +
+      '<div class="col-sm-12 col-md-8" style="background: url(' + imgSrc + '); background-repeat: no-repeat;background-size: cover;background-position: center;min-height:460px;"></div>' +
+      '<div class="col-sm-12 col-md-4" id="right">' +
+      ' <h4 class="eventName">' + title + '</h4>' +
+      '<p class="organizer">by Organizer</p>' +
+      '<p class="dateTime">Date and Time</p>' +
+      '<p class="location">' + a+'</p>' +
+      '<p class="cost">$Cost</p>' +
+      '<p class="description">' + d + '</p>'+
+    '<button type="button" class="btn btn-danger">Remove</button>' +
+    '</div>' +
+    '</div>' +
+    '<hr class="app-hr">'
 
   }
 
 
-// attach click handles for all event event buttons
-  $(document).on('click', '.btn-addToQue', function(event) {
+  // attach click handles for all event event buttons
+  $(document).on('click', '.btn-addToQue', function (event) {
     event.preventDefault()
-    var containerDiv = $(this).parent().parent()
+    var containerDiv = $(this).parent().parent();
     var infoWindowImg = containerDiv.find('.eventImg-thumb').attr('src'),
-      eventName = containerDiv.find('.eventTitle').text()
-    console.log(infoWindowImg)
-    $('#events-que').append(createDivForQue(infoWindowImg, eventName))
+      eventName = containerDiv.find('.eventTitle').text(),
+      description = $(this).attr('data-descr'),
+      addressFromInfoWindow = $(this).attr('data-addr')
+    console.log('addressFromInfoWindow =========== ', addressFromInfoWindow)
 
+    $('#events-que').append(createDivForQue(infoWindowImg, eventName, description, addressFromInfoWindow))
 
   });
 
