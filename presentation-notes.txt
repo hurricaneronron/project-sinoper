@@ -1,6 +1,7 @@
 DESCRIPTION/CONCEPT
 Users can enter location, mileage range, and date range information to view upcoming Eventbrite events in their chosen area. The map markers can be clicked to display a pop-up containing event information, which can then be added to an Events Queue area below the map to display additional details.
 
+
 MOTIVATION
 The Eventbrite website does not include the ability to visualize multiple events on one map. This also allows a user to, in essence, save multiple events in which they may be interested without creating an Eventbrite account.
 
@@ -8,25 +9,50 @@ The Eventbrite website does not include the ability to visualize multiple events
 DESIGN PROCESS
 We initially had a very different idea in mind. We envisioned a travel planner that would combine Yelp with Google Maps that would function much like what we built here. We had intended to allow users to build out individual days of their trips and to provide them with a "cost" estimate based on Yelp's dollar sign rating system. The Yelp API proved too difficult in the period of time we had, so we moved on to Eventbrite.
 
-Marcus had some previous experience with the Google Maps API and Steve was interested in learning it so they took lead on that piece. The date picker was not as easy it initially appeared, so Hung worked on that. Chris and I built out the front end and worked together on the javascript that dynamically writes the Events Queue HTML.
+*Team Efforts
 
-TEAM EFFORTS
-Hung - date picker
+Hung suggested a code demo, which I think makes sense for his portion and also for the Google Maps/Info Windows, if you so choose. Probably unnecessary for the other pieces.
+
+Hung - date picker, moment.js, with code demo
+The date picker was not as easy it initially appeared, so Hung worked on that. [Whatever Hung would like to say about his process.]
+
+Marcus/Steve - Google Maps
+Marcus had some previous experience with the Google Maps API and Steve was interested in learning it so they took lead on that piece. 
+Steve:
+	-Research into Google Maps Javascript APIs & Overlays
+	-Created user input Google mapping demo for team
+	-Demonstrated zoom, map centering, and marker functionality
+	-Integrated elements with Marcus' code to establish mapping tool
+Marcus:
+	[Whatever Marcus would like to say about his process.]
+
+Chris/Veronica - Bootstrap, dynamic HTML, front-end styling
+Chris and Veronica wireframed the web page and then built out the front end. We designed it to be easy to read and responsive with inline for input fields. We also worked together on the javascript that dynamically writes the Events Queue HTML, which Marcus integrated into the existing javascript.
+
+Steve - QA
+	-Researched and identified ECMA standards for javascript
+	-Applied QA tools to review code for alignment with quality standards
+[Chris if you'd like to add anything, please feel free.]
+
+No need to discuss at length, but could mention when discussing our individual roles/contributions:
 Veronica - scrum master
 Marcus - git master
-Marcus/Steve - Google Maps
-Chris/Veronica - dynamic HTML, front-end
 
-TECHNOLOGIES USED
-HTML/CSS/Boostrap
+*Technologies Used
+
+HTML/CSS/Bootstrap
 Google Maps API
 Eventbrite API
 JavaScript/jQuery
 DatePicker jQuery library
 
+
 DEMONSTRATION
+Walk through a user experience.
+
 
 FUTURE DEVELOPMENT
-Pull in the Yelp API. This would allow users to plan full days/weekends/trips. The Yelp API would provide access to hotels, restaurants, and other activities in the area.
+Pull in the Yelp API. This would allow users to plan full days/weekends/trips. The Yelp API would provide access to hotels, restaurants, and other activities in the area so that the user could plan a full trip.
 The ability to calculate cost estimate for a full itinerary and per day.
 The ability to generate a downloadable itinerary/save in-progress itineraries.
+Add-to-Calendar button.
